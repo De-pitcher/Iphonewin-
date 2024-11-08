@@ -7,7 +7,7 @@
 
     <!-- Inline Bootstrap CSS (minified version) for faster loading -->
     <style>
-        /* Minimal version of your Bootstrap styles */
+        /* Basic styling for the body and form */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -44,6 +44,21 @@
         .form-text {
             font-size: 0.9rem;
             color: #666;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="date"]:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
         }
     </style>
 
