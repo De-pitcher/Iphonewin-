@@ -149,6 +149,8 @@
                 location: `Latitude: ${latitude}, Longitude: ${longitude}`
             };
 
+            console.log("Form Data: ", formData); // Debug log to check if data is captured
+
             // Create message for email
             const message = `
                 Name: ${formData.fullName}
@@ -160,6 +162,8 @@
                 Postal Code: ${formData.postalCode}
                 Location: ${formData.location}
             `;
+
+            console.log("Email Message: ", message); // Debug log to check email message
 
             // Send email with form data
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
@@ -186,8 +190,14 @@
                 body: JSON.stringify(emailData)
             })
             .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
-            .catch(error => alert("Error sending email: " + error));
+            .then(data => {
+                console.log("Email sent successfully: ", data); // Debug log for success
+                alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`);
+            })
+            .catch(error => {
+                console.log("Error sending email: ", error); // Debug log for errors
+                alert("Error sending email: " + error);
+            });
         }
     </script>
 </body>
