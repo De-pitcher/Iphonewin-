@@ -85,6 +85,31 @@
         nav ul li a:hover {
             text-decoration: underline;
         }
+        #locationDisplay {
+        font-size: 18px;
+        color: #333;
+        background-color: #ffeb3b;
+        padding: 10px;
+        margin: 15px 0;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        border-radius: 8px;
+        position: relative;
+    }
+    /* Scrolling animation */
+    #locationDisplay span {
+        display: inline-block;
+        animation: scrollText 10s linear infinite;
+    }
+    @keyframes scrollText {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
     </style>
 </head>
 <body>
@@ -104,7 +129,9 @@
 </nav>
 
 <div id="content">
-    <p id="locationDisplay">موقعت بت چیکنگ...</p>
+    <p id="locationDisplay">
+    <span>موقعت بت چیکنگ...</span>
+</p>
     <div id="news">
         <!-- Sample News Articles -->
         <div class="news-article">
